@@ -15,9 +15,14 @@ Repository for Bacherlor Thesis EENX15-22-23
 
 # Ideas Machine Learning Part
 - Normal Object Detection(YOLOv5?, more) on objects lying flat and include rotation as input somehow
-- Ratio between width and height of bounding box to approximate rotation?
+    - Ratio between width and height of bounding box to approximate rotation?
+    - Compute ideal grabbing point from bounding box and type of part
 - Detect occluded objects (partially visible objects)?
-- Compute ideal grabbing point from bounding box and type of part
-- Aruco somehow on the surrounding box
-- Some 6D Object detection (EffecientPose?, Pix2Pose?)
+- Do something with Aruco tags?
+- 6D Object Detection with EfficientPose
+    - [GitHub](https://github.com/ybkscht/EfficientPose)
+- Facebook's Detectron2 using PyTorch (Removes empty space in bounding box, kind of)
+    - [Intro](https://www.youtube.com/watch?v=1oq1Ye7dFqc)
+    - [Short Machine Learning Use Case](https://www.youtube.com/watch?v=eUSgtfK4ivk)
+    - [GitHub](https://github.com/facebookresearch/detectron2)
 
