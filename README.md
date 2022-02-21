@@ -12,3 +12,10 @@ Repository for Bacherlor Thesis EENX15-22-23
         - Everything strictly related to the ROS part of the project goes here
 
     - Dataset goes in top-level folder
+
+# Ideas Machine Learning Part
+- Normal Object Detection(YOLOv5?, more) on objects lying flat and include rotation as input somehow
+- Ratio between width and height of bounding box to approximate rotation?
+- Detect occluded objects (partially visible objects)?
+- Compute ideal grabbing point from bounding box and type of part
+- Aruco somehow on the surrounding box
