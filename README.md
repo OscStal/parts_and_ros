@@ -19,3 +19,5 @@ Repository for Bacherlor Thesis EENX15-22-23
 - Detect occluded objects (partially visible objects)?
 - Compute ideal grabbing point from bounding box and type of part
 - Aruco somehow on the surrounding box
+- Some 6D Object detection (EffecientPose?, Pix2Pose?)
+
