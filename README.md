@@ -25,4 +25,5 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Intro](https://www.youtube.com/watch?v=1oq1Ye7dFqc)
     - [Short Machine Learning Use Case](https://www.youtube.com/watch?v=eUSgtfK4ivk)
     - [GitHub](https://github.com/facebookresearch/detectron2)
-
+- Mask RCNN, similiar to Detectron
+    - [GitHub](https://github.com/matterport/Mask_RCNN)
