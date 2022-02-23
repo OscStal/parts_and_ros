@@ -1,13 +1,39 @@
 import cv2
 import os
 
+def imgs_from_video(file_prefix: str) -> None:
+    """
+    Creates a set of images from a source video file.
+    Set the file_choice_dialog_enabled flag to True for pop-up-window file choice, to False to manually specify file path.
+    If the manually specified output folder does not exist it will be created.
+    """
 
-def imgs_from_video(file_path: str, file_prefix: str) -> None:
-    video_capture = cv2.VideoCapture(file_path)
+    if file_choice_dialog_enabled:
+        import tkinter as tk
+        from tkinter import filedialog
+
+        root = tk.Tk()
+        root.withdraw()
+        in_file = filedialog.askopenfilename(title="Choose source video file")
+        if in_file is "":
+            root.destroy()
+            return
+        out_folder = filedialog.askdirectory(title="Choose output folder")
+        if out_folder is "":
+            root.destroy()
+            return
+
+    else:
+        in_file = vid_file_path
+        out_folder = out_folder_path
+        if not os.path.exists(out_folder):
+            os.makedirs(out_folder)
+
+    video_capture = cv2.VideoCapture(in_file)
     fps = video_capture.get(cv2.CAP_PROP_FPS)
     rate: int = int(fps / image_capture_rate)
     success, image = video_capture.read()
-    os.chdir(out_folder_path)
+    os.chdir(out_folder)
     count: int = 0
     while success:
         if (count % rate) == 0:
@@ -18,18 +44,15 @@ def imgs_from_video(file_path: str, file_prefix: str) -> None:
         count += 1
 
 
-
-# Specify video path and output folder here
-vid_file_path = r"datasets\linemod\vids\datasetfilm3.mp4"
-out_folder_path = r"datasets\linemod\imgs"
-
-# Also specify this, approximate amount of images captured per second of video
+# Manually specify these if file choice dialog is not enabled
+vid_file_path: str = "datasets/test/test.mp4"
+out_folder_path: str = "datasets/test/imgs"
 image_capture_rate: int = 2
-image_filename_prefix = "datasetfilm3_"
+image_filename_prefix: str = "datasetfilm3_"
 
+# Specify this
+file_choice_dialog_enabled: bool = True
 
 
 if __name__ == "__main__":
-    if not os.path.exists(out_folder_path):
-        os.makedirs(out_folder_path)
-    imgs_from_video(vid_file_path, image_filename_prefix)
+    imgs_from_video(image_filename_prefix)
