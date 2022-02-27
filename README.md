@@ -25,5 +25,7 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Intro](https://www.youtube.com/watch?v=1oq1Ye7dFqc)
     - [Short Machine Learning Use Case](https://www.youtube.com/watch?v=eUSgtfK4ivk)
     - [GitHub](https://github.com/facebookresearch/detectron2)
+    - [Colab Template](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5)
+    - [Useful Resource 1](https://gilberttanner.com/blog/detectron2-train-a-instance-segmentation-model)
 - Mask RCNN, similiar to Detectron
     - [GitHub](https://github.com/matterport/Mask_RCNN)
