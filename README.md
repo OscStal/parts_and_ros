@@ -29,3 +29,8 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Useful Resource 1](https://gilberttanner.com/blog/detectron2-train-a-instance-segmentation-model)
 - Mask RCNN, similiar to Detectron
     - [GitHub](https://github.com/matterport/Mask_RCNN)
+- Generating images with Blender
+    - [BlenderProc](https://github.com/DLR-RM/BlenderProc)
+    - [blAInder](https://github.com/ln-12/blainder-range-scanner)
+    - [Blender For AI Developers Video "Course" (May or may not be useful)](https://www.immersivelimit.com/tutorials/blender-for-ai-developers)
+        -[Some sort of Intro to this](https://www.immersivelimit.com/tutorials/synthetic-datasets-with-blender)

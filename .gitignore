@@ -128,4 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Ignores video files since git does not handle files over 100MB very well without LFS.
 *.mp4
