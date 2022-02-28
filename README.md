@@ -33,4 +33,4 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [BlenderProc](https://github.com/DLR-RM/BlenderProc)
     - [blAInder](https://github.com/ln-12/blainder-range-scanner)
     - [Blender For AI Developers Video "Course" (May or may not be useful)](https://www.immersivelimit.com/tutorials/blender-for-ai-developers)
-        -[Some sort of Intro to this](https://www.immersivelimit.com/tutorials/synthetic-datasets-with-blender)
+        - [Some sort of Intro to this](https://www.immersivelimit.com/tutorials/synthetic-datasets-with-blender)
