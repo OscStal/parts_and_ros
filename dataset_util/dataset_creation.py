@@ -1,6 +1,17 @@
 import cv2
 import os
 
+# Manually specify these if file_choice boolean below is False
+vid_file_path: str = "datasets/test/test.mp4"
+out_folder_path: str = "datasets/test/imgs"
+image_capture_rate: int = 2
+image_filename_prefix: str = "datasetfilm3_"
+
+# Specify this
+file_choice_with_file_explorer: bool = True
+
+
+
 def imgs_from_video(file_prefix: str) -> None:
     """
     Creates a set of images from a source video file.
@@ -8,7 +19,7 @@ def imgs_from_video(file_prefix: str) -> None:
     If the manually specified output folder does not exist it will be created.
     """
 
-    if file_choice_dialog_enabled:
+    if file_choice_with_file_explorer:
         import tkinter as tk
         from tkinter import filedialog
 
@@ -43,15 +54,6 @@ def imgs_from_video(file_prefix: str) -> None:
         print(f"Created frame: {success}")
         count += 1
 
-
-# Manually specify these if file choice dialog is not enabled
-vid_file_path: str = "datasets/test/test.mp4"
-out_folder_path: str = "datasets/test/imgs"
-image_capture_rate: int = 2
-image_filename_prefix: str = "datasetfilm3_"
-
-# Specify this
-file_choice_dialog_enabled: bool = True
 
 
 if __name__ == "__main__":

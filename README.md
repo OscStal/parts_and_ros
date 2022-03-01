@@ -27,6 +27,7 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [GitHub](https://github.com/facebookresearch/detectron2)
     - [Colab Template](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5)
     - [Useful Resource 1](https://gilberttanner.com/blog/detectron2-train-a-instance-segmentation-model)
+    - [Detectron2 Explained[77min] - YouTube](https://www.youtube.com/watch?v=4woFgFM4PFU)
 - Mask RCNN, similiar to Detectron
     - [GitHub](https://github.com/matterport/Mask_RCNN)
 - Generating images with Blender
