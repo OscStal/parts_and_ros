@@ -38,3 +38,4 @@ Repository for Bacherlor Thesis EENX15-22-23
 - Labeling
     - [Segments.ai](https://segments.ai/blog/speed-up-image-segmentation-with-model-assisted-labeling)
     - [LabelMe format to COCO format](https://github.com/Tony607/labelme2coco/blob/master/labelme2coco.py)
+    - [Split coco JSON file into train.json and test.json](https://github.com/akarazniewicz/cocosplit)
