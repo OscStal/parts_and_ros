@@ -138,3 +138,6 @@ dmypy.json
 
 # Ignore compressed files
 *.zip
+
+# Ignore datasets
+datasets/
