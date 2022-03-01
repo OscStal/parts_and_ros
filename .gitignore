@@ -130,4 +130,11 @@ dmypy.json
 
 # Ignores video files since git does not handle files over 100MB very well without LFS.
 *.mp4
+
+# Ignore images
 *.jpg
+*.png
+*.jpeg
+
+# Ignore compressed files
+*.zip

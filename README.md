@@ -35,3 +35,6 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [blAInder](https://github.com/ln-12/blainder-range-scanner)
     - [Blender For AI Developers Video "Course" (May or may not be useful)](https://www.immersivelimit.com/tutorials/blender-for-ai-developers)
         - [Some sort of Intro to this](https://www.immersivelimit.com/tutorials/synthetic-datasets-with-blender)
+- Labeling
+    - [Segments.ai](https://segments.ai/blog/speed-up-image-segmentation-with-model-assisted-labeling)
+    - [LabelMe format to COCO format](https://github.com/Tony607/labelme2coco/blob/master/labelme2coco.py)
