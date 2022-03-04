@@ -156,7 +156,7 @@ if __name__ == "__main__":
         type=str,
     )
     parser.add_argument(
-        "--output", help="Output json file path.", default="datasets/labels.json"
+        "--output", help="Output json file path.", default="datasets/all.json"
     )
     args = parser.parse_args()
     labelme_json = glob.glob(os.path.join(args.labelme_images, "*.json"))

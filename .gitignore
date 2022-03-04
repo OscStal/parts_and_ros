@@ -141,3 +141,4 @@ dmypy.json
 
 # Ignore datasets
 datasets/
+datasets
