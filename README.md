@@ -14,7 +14,7 @@ Repository for Bacherlor Thesis EENX15-22-23
     - Dataset goes in top-level folder
 
 # Ideas Machine Learning Part
-- Normal Object Detection(YOLOv5?, more) on objects lying flat and include rotation as input somehow
+- Normal Object Detection on objects lying flat and include rotation as input somehow
     - Ratio between width and height of bounding box to approximate rotation?
     - Compute ideal grabbing point from bounding box and type of part
 - Detect occluded objects (partially visible objects)?
@@ -28,6 +28,7 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Colab Template](https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5)
     - [Useful Resource 1](https://gilberttanner.com/blog/detectron2-train-a-instance-segmentation-model)
     - [Detectron2 Explained[77min] - YouTube](https://www.youtube.com/watch?v=4woFgFM4PFU)
+    - [Install gcc and g++ on Windows](https://www.youtube.com/watch?v=8CNRX1Bk5sY)
 - Mask RCNN, similiar to Detectron
     - [GitHub](https://github.com/matterport/Mask_RCNN)
 - Generating images with Blender

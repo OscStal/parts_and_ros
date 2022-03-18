@@ -132,7 +132,6 @@ dmypy.json
 *.mp4
 
 # Ignore images
-*.jpg
 *.png
 *.jpeg
 
@@ -140,5 +139,5 @@ dmypy.json
 *.zip
 
 # Ignore datasets
-datasets/
-datasets
+datasets/*
+!datasets/sample/
