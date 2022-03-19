@@ -42,3 +42,4 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Split coco JSON file into train.json and test.json](https://github.com/akarazniewicz/cocosplit)
     - [Possible data augmentation solution](https://github.com/joheras/CLoDSA)
     - [Data Augmentation from NVIDIA](https://docs.nvidia.com/deeplearning/dali/user-guide/docs/examples/use_cases/detection_pipeline.html)
+    - [ImgAug for augmentations (Looks most promising)](https://github.com/aleju/imgaug)
