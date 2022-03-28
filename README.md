@@ -1,24 +1,14 @@
 # parts_and_ros
 Repository for Bacherlor Thesis EENX15-22-23
 
-# File structure (Förslag)
-- "requirements.txt", ".gitignore" and very general files in this top-level.
+# File structure
+- "parts_and_ros"-folder
+    - General files
+    - "ml"-folder - everything machine learning
+    - "ros"-folder - everything ros
+    - dataset and data-related things
 
-- Top Level - "parts_and_ros"-folder
-    - "ml"-folder
-        - Everything strictly related to the Machine Learning part of the project goes here
-
-    - "ros"-folder
-        - Everything strictly related to the ROS part of the project goes here
-
-    - Dataset goes in top-level folder
-
-# Ideas Machine Learning Part
-- Normal Object Detection on objects lying flat and include rotation as input somehow
-    - Ratio between width and height of bounding box to approximate rotation?
-    - Compute ideal grabbing point from bounding box and type of part
-- Detect occluded objects (partially visible objects)?
-- Do something with Aruco tags?
+# Random Resources
 - 6D Object Detection with EfficientPose
     - [GitHub](https://github.com/ybkscht/EfficientPose)
 - Facebook's Detectron2 using PyTorch (Removes empty space in bounding box, kind of)
