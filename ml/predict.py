@@ -29,7 +29,7 @@ def detect_viz():
     """
 
     # Setup metadata and model
-    test_data_location = "../datasets/sample/imgs/all"
+    test_data_location = "datasets/sample/imgs/all"
     register_coco_instances("train", {}, os.path.join(test_data_location, "a_json.json"), test_data_location)
     custom_metadata: Metadata = MetadataCatalog.get("train")
 
@@ -115,14 +115,15 @@ def find_center(outputs, image):
     center = ndimage.measurements.center_of_mass(mask)
     print(f"Center: {center}")
     center_int = tuple(int(x) for x in center)
-    print(f"Center int {center_int}")
-    new_img = cv2.circle(image, center_int, 16, (255,0,0), 4)
+    center_int_xy = center_int[::-1]
+    print(f"Center int {center_int_xy}")
+    new_img = cv2.circle(image, center_int_xy, 16, (255,0,0), 4)
     cv2.imshow("Center of Mass", new_img)
 
 
 
 vidcap_id: int = 1
-model_path: str = "../model_final.pth"
+model_path: str = "model_final.pth"
 device: str = "cpu"
 
 if __name__ == "__main__":
