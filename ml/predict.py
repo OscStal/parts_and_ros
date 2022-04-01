@@ -96,11 +96,11 @@ def detect_viz():
         time_list.append(tt1)
         iters += 1
 
-        if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 2:
+        if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 20:
             cap.release()
             cv2.destroyAllWindows()
             avg_time = (sum(time_list) / len(time_list))
-            print(avg_time)
+            print(f"Average time: {avg_time}")
             break
 
 
