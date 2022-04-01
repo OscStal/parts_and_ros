@@ -93,11 +93,13 @@ def detect_viz():
         cv2.imshow("", pred_img)
         cv2.waitKey(10)
 
-        if benchmark: tt0 = t1 - t0
-        # print(f"Time to create visualizer: {tt0}")
+        if benchmark: 
+            tt0 = t1 - t0
+            print(f"Time to create visualizer: {tt0}")
 
-        if benchmark: tt1 = t2 - t1
-        print(f"Time for prediction: {tt1}")
+        if benchmark: 
+            tt1 = t2 - t1
+            print(f"Time for prediction: {tt1}")
 
         if benchmark: time_list.append(tt1)
         iters += 1
