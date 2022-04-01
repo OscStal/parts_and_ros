@@ -78,9 +78,9 @@ def detect_viz():
 
         # Finds and plots a circle in the center of mass of the binary mask
         find_center(outputs, frame)
-        cv2.waitKey(0) & 0xFF == ord('n')
+        # cv2.waitKey(0) & 0xFF == ord('n')
 
-        print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks).shape}")
+        print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks.cpu()).shape}")
         print("Creating instance predictions")
         preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         new_img = preds.get_image()[:, :, ::-1]
@@ -110,7 +110,7 @@ def find_center(outputs, image):
     """
     numpy.set_printoptions(threshold=np.inf)
 
-    mask = np.array(outputs["instances"].pred_masks)[0]
+    mask = np.array(outputs["instances"].pred_masks.cpu())[0]
     print(f"Mask is {mask}")
     center = ndimage.measurements.center_of_mass(mask)
     print(f"Center: {center}")
