@@ -83,16 +83,18 @@ def detect_viz():
         print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks.cpu()).shape}")
         print("Creating instance predictions")
         preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        new_img = preds.get_image()[:, :, ::-1]
+        pred_img = preds.get_image()[:, :, ::-1]
 
         print("Showing image")
-        cv2.imshow("", new_img)
+        cv2.imshow("", pred_img)
         cv2.waitKey(10)
 
         tt0 = t1 - t0
-        tt1 = t2 - t1
         print(f"Time for create visualizer: {tt0}")
+
+        tt1 = t2 - t1
         print(f"Time for prediction: {tt1}")
+
         time_list.append(tt1)
         iters += 1
 
@@ -108,16 +110,22 @@ def find_center(outputs, image):
     """
     Finds the "center of mass" of the binary mask from a prediction
     """
-    numpy.set_printoptions(threshold=np.inf)
+    # Print entire binary mask
+    # numpy.set_printoptions(threshold=np.inf)
 
     mask = np.array(outputs["instances"].pred_masks.cpu())[0]
     print(f"Mask is {mask}")
+
     center = ndimage.measurements.center_of_mass(mask)
     print(f"Center: {center}")
-    center_int = tuple(int(x) for x in center)
-    center_int_xy = center_int[::-1]
+    center_int_yx = tuple(int(x) for x in center)
+    center_int_xy = center_int_yx[::-1]
     print(f"Center int {center_int_xy}")
-    new_img = cv2.circle(image, center_int_xy, 16, (255,0,0), 4)
+
+    circle_radius = 4
+    circle_thickness = 2
+    circle_color = (255, 0, 0)
+    new_img = cv2.circle(image, center_int_xy, circle_radius, circle_color, circle_thickness)
     cv2.imshow("Center of Mass", new_img)
 
 
