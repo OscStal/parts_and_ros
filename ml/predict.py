@@ -55,7 +55,7 @@ def detect_viz():
     print("Adding video source")
     cap = cv2.VideoCapture(vidcap_id)
 
-    time_list = []
+    if benchmark: time_list = []
     iters = 0
 
     while(True):
@@ -65,23 +65,27 @@ def detect_viz():
         # frame = cv2.imread("test1.jpeg")
 
         print("Calculating outputs")
-        t0 = time.perf_counter()
+        if benchmark: t0 = time.perf_counter()
         v = Visualizer(frame[:, :, ::-1],
                     metadata=custom_metadata, 
                     scale=1.0, 
                     instance_mode=ColorMode.SEGMENTATION   # remove the colors of unsegmented pixels. This option is only available for segmentation models
         )
 
-        t1 = time.perf_counter()
+        if benchmark: t1 = time.perf_counter()
         outputs = predictor(frame) # format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format
-        t2 = time.perf_counter()
+        if benchmark: t2 = time.perf_counter()
 
         # Finds and plots a circle in the center of mass of the binary mask
         find_center(outputs, frame)
         # cv2.waitKey(0) & 0xFF == ord('n')
 
-        print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks.cpu()).shape}")
-        print("Creating instance predictions")
+        if device == "cuda":
+            print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks.cpu()).shape}")
+        if device == "cpu":
+            print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks).shape}")
+
+        print("Creating drawable instance predictions")
         preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         pred_img = preds.get_image()[:, :, ::-1]
 
@@ -89,20 +93,21 @@ def detect_viz():
         cv2.imshow("", pred_img)
         cv2.waitKey(10)
 
-        tt0 = t1 - t0
-        print(f"Time for create visualizer: {tt0}")
+        if benchmark: tt0 = t1 - t0
+        # print(f"Time to create visualizer: {tt0}")
 
-        tt1 = t2 - t1
+        if benchmark: tt1 = t2 - t1
         print(f"Time for prediction: {tt1}")
 
-        time_list.append(tt1)
+        if benchmark: time_list.append(tt1)
         iters += 1
 
         if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 20:
             cap.release()
             cv2.destroyAllWindows()
-            avg_time = (sum(time_list) / len(time_list))
-            print(f"Average time: {avg_time}")
+            if benchmark:
+                avg_time = (sum(time_list) / len(time_list))
+                print(f"Average time: {avg_time}")
             break
 
 
@@ -110,17 +115,18 @@ def find_center(outputs, image):
     """
     Finds the "center of mass" of the binary mask from a prediction
     """
-    # Print entire binary mask
-    # numpy.set_printoptions(threshold=np.inf)
+    # numpy.set_printoptions(threshold=np.inf)  # Print entire binary mask
 
-    mask = np.array(outputs["instances"].pred_masks.cpu())[0]
+    if device == "cuda":
+        mask = np.array(outputs["instances"].pred_masks.cpu())[0]
+    if device == "cpu":
+        mask = np.array(outputs["instances"].pred_masks)[0]
     print(f"Mask is {mask}")
 
     center = ndimage.measurements.center_of_mass(mask)
-    print(f"Center: {center}")
     center_int_yx = tuple(int(x) for x in center)
     center_int_xy = center_int_yx[::-1]
-    print(f"Center int {center_int_xy}")
+    print(f"Center pixel: {center_int_xy}")
 
     circle_radius = 4
     circle_thickness = 2
@@ -133,6 +139,7 @@ def find_center(outputs, image):
 vidcap_id: int = 1
 model_path: str = "model_final.pth"
 device: str = "cpu"
+benchmark: bool = True
 
 if __name__ == "__main__":
     detect_viz()
