@@ -34,18 +34,9 @@ def detect_viz():
     custom_metadata: Metadata = MetadataCatalog.get("train")
 
     # Config Setup, Inference should use the config with parameters that are used in training
+    # Some of these config parameters might be unneccesary for testing on images
     cfg: CfgNode = get_cfg()
-    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml"))
-    cfg.MODEL.WEIGHTS = model_path
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
-    cfg.MODEL.DEVICE = device
-    cfg.DATASETS.TRAIN = ("train", )
-    cfg.DATALOADER.NUM_WORKERS = 2
-    cfg.SOLVER.IMS_PER_BATCH = 2
-    cfg.SOLVER.BASE_LR = 0.00025
-    cfg.SOLVER.STEPS = []
-    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
+    setup_cfg(cfg)
 
     # Detection Setup
     print("Creating Predictor")
@@ -59,18 +50,19 @@ def detect_viz():
     iters = 0
 
     while(True):
-        print(f"iteration{iters}")
+        print(f"Iteration: {iters}")
         print("Reading image")
         _, frame = cap.read()
         # frame = cv2.imread("test1.jpeg")
 
         print("Calculating outputs")
-        if benchmark: t0 = time.perf_counter()
-        v = Visualizer(frame[:, :, ::-1],
+        if benchmark and visualize: t0 = time.perf_counter()
+        if visualize: 
+            v = Visualizer(frame[:, :, ::-1],
                     metadata=custom_metadata, 
                     scale=1.0, 
                     instance_mode=ColorMode.SEGMENTATION   # remove the colors of unsegmented pixels. This option is only available for segmentation models
-        )
+            )
 
         if benchmark: t1 = time.perf_counter()
         outputs = predictor(frame) # format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format
@@ -87,12 +79,13 @@ def detect_viz():
         print(f"Detected objects + image size: {shape}")
 
         # print("Creating drawable instance predictions")
-        preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        pred_img = preds.get_image()[:, :, ::-1]
+        if visualize:
+            preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+            pred_img = preds.get_image()[:, :, ::-1]
 
-        print("Showing image")
-        cv2.imshow("", pred_img)
-        cv2.waitKey(10)
+            print("Showing image")
+            cv2.imshow("", pred_img)
+            cv2.waitKey(10)
 
         if benchmark: 
             tt0 = t1 - t0
@@ -109,6 +102,19 @@ def detect_viz():
                 avg_time = (sum(time_list) / len(time_list))
                 print(f"Average time: {avg_time}")
             break
+
+def setup_cfg(cfg):
+    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml"))
+    cfg.MODEL.WEIGHTS = model_path
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5
+    cfg.MODEL.DEVICE = device
+    cfg.DATASETS.TRAIN = ("train", )
+    cfg.DATALOADER.NUM_WORKERS = 2
+    cfg.SOLVER.IMS_PER_BATCH = 2
+    cfg.SOLVER.BASE_LR = 0.00025
+    cfg.SOLVER.STEPS = []
+    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
+    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
 
 
 def find_center(outputs, image):
@@ -142,6 +148,7 @@ vidcap_id: int = 1
 model_path: str = "model_final.pth"
 device: str = "cpu"
 benchmark: bool = True
+visualize: bool = True
 
 if __name__ == "__main__":
     detect_viz()
