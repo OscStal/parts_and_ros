@@ -81,11 +81,12 @@ def detect_viz():
         # cv2.waitKey(0) & 0xFF == ord('n')
 
         if device == "cuda":
-            print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks.cpu()).shape}")
+            shape = np.array(outputs['instances'].pred_masks.cpu()).shape
         if device == "cpu":
-            print(f"Detected objects + image size: {np.array(outputs['instances'].pred_masks).shape}")
+            np.array(outputs['instances'].pred_masks).shape
+        print(f"Detected objects + image size: {shape}")
 
-        print("Creating drawable instance predictions")
+        # print("Creating drawable instance predictions")
         preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         pred_img = preds.get_image()[:, :, ::-1]
 
@@ -96,12 +97,9 @@ def detect_viz():
         if benchmark: 
             tt0 = t1 - t0
             print(f"Time to create visualizer: {tt0}")
-
-        if benchmark: 
             tt1 = t2 - t1
             print(f"Time for prediction: {tt1}")
-
-        if benchmark: time_list.append(tt1)
+            time_list.append(tt1)
         iters += 1
 
         if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 20:
@@ -126,14 +124,16 @@ def find_center(outputs, image):
     print(f"Mask is {mask}")
 
     center = ndimage.measurements.center_of_mass(mask)
-    center_int_yx = tuple(int(x) for x in center)
-    center_int_xy = center_int_yx[::-1]
-    print(f"Center pixel: {center_int_xy}")
+    # center has coordinates in (y,x) and float, this makes it (x,y) and rounded integers
+    center_int = tuple((int(x) for x in center)[::-1])
+    # center_int_yx = tuple(int(x) for x in center)
+    # center_int_xy = center_int_yx[::-1]
+    print(f"Center pixel: {center_int}")
 
     circle_radius = 4
     circle_thickness = 2
     circle_color = (255, 0, 0)
-    new_img = cv2.circle(image, center_int_xy, circle_radius, circle_color, circle_thickness)
+    new_img = cv2.circle(image, center_int, circle_radius, circle_color, circle_thickness)
     cv2.imshow("Center of Mass", new_img)
 
 
