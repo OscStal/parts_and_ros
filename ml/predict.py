@@ -64,8 +64,9 @@ def detect_objects():
 
         visualize_all_objects(outputs, frame, custom_metadata)
 
-        for mask in outputs['instances'].pred_masks:
-            print(np.array(mask.shape))
+        all_masks = outputs['instances'].pred_masks
+        for mask in all_masks:
+            print(np.array(mask.shape.cpu()))
             find_center(mask, frame)
 
         # Finds and plots a circle in the center of mass of the binary mask
