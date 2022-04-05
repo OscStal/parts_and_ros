@@ -28,7 +28,7 @@ def detect_objects():
     """
 
     # Setup metadata, might not be neccessary
-    register_coco_instances("train", {}, os.path.join(test_data_location, "a_json.json"), test_data_location)
+    # register_coco_instances("train", {}, os.path.join(test_data_location, "a_json.json"), test_data_location)
     custom_metadata: Metadata = MetadataCatalog.get("train")
 
     # Config Setup, Inference should use the config with parameters that are used in training
@@ -118,7 +118,7 @@ def setup_cfg() -> CfgNode:
     cfg.MODEL.WEIGHTS = model_path
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.9
     cfg.MODEL.DEVICE = DEVICE
-    cfg.DATASETS.TRAIN = ("train", )
+    # cfg.DATASETS.TRAIN = ("train", )
     cfg.DATALOADER.NUM_WORKERS = 2
     cfg.SOLVER.IMS_PER_BATCH = 2
     cfg.SOLVER.BASE_LR = 0.00025
