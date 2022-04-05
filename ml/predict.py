@@ -74,7 +74,7 @@ def detect_objects():
 
         iters += 1
 
-        if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 5:
+        if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 5 or True:
             cap.release()
             cv2.destroyAllWindows()
             if benchmark:
@@ -140,7 +140,7 @@ def find_center(mask, image):
     # numpy.set_printoptions(threshold=np.inf)  # Print entire binary mask
     # print(f"Mask is {mask}")
 
-    center = ndimage.measurements.center_of_mass(mask)
+    center = ndimage.center_of_mass(mask)
     # center has coordinates in (y,x) and float, this makes it (x,y) and rounded integers
     center_int = tuple((int(x) for x in center))[::-1]
     print(f"Center pixel: {center_int}")
