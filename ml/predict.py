@@ -28,7 +28,7 @@ def detect_objects():
     Sets up config and model, creates Predictor, runs predictions on an image captured by camera and visualizes it
     """
 
-    # Setup metadata and model
+    # Setup metadata, might not be neccessary
     register_coco_instances("train", {}, os.path.join(test_data_location, "a_json.json"), test_data_location)
     custom_metadata: Metadata = MetadataCatalog.get("train")
 
@@ -43,7 +43,7 @@ def detect_objects():
 
     # Capture video source, 0 for webcam on laptop, might be 1 for external camera
     print("Adding video source")
-    cap = cv2.VideoCapture(vidcap_id)
+    cap = cv2.VideoCapture(VIDCAP_ID)
 
     if benchmark: time_list = []
     iters = 0
@@ -59,45 +59,43 @@ def detect_objects():
         outputs = predictor(frame) # format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format
         if benchmark: t2 = time.perf_counter()
 
-        shape = get_shape(outputs)
+        shape = get_mask_tensor_shape(outputs)
         print(f"Detected objects + image size: {shape}")
 
-        visualize_all_objects(outputs, frame, custom_metadata)
+        visualize_mask_and_center_all(outputs, frame, custom_metadata)
 
         all_masks = outputs['instances'].pred_masks
         for mask in all_masks:
-            print(np.array(mask.shape.cpu()))
+            # print(np.array(mask.shape))
             find_center(mask, frame)
 
         # Finds and plots a circle in the center of mass of the binary mask
         # cv2.waitKey(0) & 0xFF == ord('n')
 
-
-        if benchmark: 
-            tt1 = t2 - t1
-            print(f"Time for prediction: {tt1}")
-            time_list.append(tt1)
         iters += 1
 
         if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 5:
             cap.release()
             cv2.destroyAllWindows()
             if benchmark:
+                tt1 = t2 - t1
+                print(f"Time for prediction: {tt1}")
+                time_list.append(tt1)
                 avg_time = (sum(time_list) / len(time_list))
                 print(f"Average time: {avg_time}")
             break
 
 
 
-def get_shape(outputs):
-    if device == "cuda":
+def get_mask_tensor_shape(outputs):
+    if DEVICE == "cuda":
         shape = np.array(outputs['instances'].pred_masks.cpu()).shape
-    if device == "cpu":
+    if DEVICE == "cpu":
         shape = np.array(outputs['instances'].pred_masks).shape
     return shape
 
 
-def visualize_all_objects(outputs, frame, custom_metadata):
+def visualize_mask_and_center_all(outputs, frame, custom_metadata):
     if visualize:
         v = Visualizer(frame[:, :, ::-1],
                     metadata=custom_metadata, 
@@ -112,13 +110,14 @@ def visualize_all_objects(outputs, frame, custom_metadata):
         print("Showing image")
         cv2.imshow("", pred_img)
         cv2.waitKey(10)
+        return pred_img
 
 
 def setup_cfg(cfg):
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml"))
     cfg.MODEL.WEIGHTS = model_path
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.85
-    cfg.MODEL.DEVICE = device
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.9
+    cfg.MODEL.DEVICE = DEVICE
     cfg.DATASETS.TRAIN = ("train", )
     cfg.DATALOADER.NUM_WORKERS = 2
     cfg.SOLVER.IMS_PER_BATCH = 2
@@ -132,33 +131,32 @@ def find_center(mask, image):
     """
     Finds the "center of mass" of the binary mask from a prediction
     """
-    # numpy.set_printoptions(threshold=np.inf)  # Print entire binary mask
-
-    if device == "cuda":
+    if DEVICE == "cuda":
         mask = np.array(mask.cpu())
-    if device == "cpu":
+    if DEVICE == "cpu":
         mask = np.array(mask)
+
+    # numpy.set_printoptions(threshold=np.inf)  # Print entire binary mask
     # print(f"Mask is {mask}")
 
     center = ndimage.measurements.center_of_mass(mask)
     # center has coordinates in (y,x) and float, this makes it (x,y) and rounded integers
     center_int = tuple((int(x) for x in center))[::-1]
-    # center_int_yx = tuple(int(x) for x in center)
-    # center_int_xy = center_int_yx[::-1]
     print(f"Center pixel: {center_int}")
 
-    circle_radius = 4
-    circle_thickness = 2
-    circle_color = (255, 0, 0)
-    new_img = cv2.circle(image, center_int, circle_radius, circle_color, circle_thickness)
-    cv2.imshow("Center of Mass", new_img)
+    CIRCLE_RADIUS = 4
+    CIRCLE_THICKNESS = 2
+    CIRCLE_COLOR = (255, 0, 0)
+    if visualize:
+        new_img = cv2.circle(image, center_int, CIRCLE_RADIUS, CIRCLE_COLOR, CIRCLE_THICKNESS)
+        cv2.imshow("Center of Mass", new_img)
 
 
 
-vidcap_id: int = 1
+VIDCAP_ID: int = 1
+DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
 test_data_location = "datasets/sample/imgs/all"
-device: str = "cpu"
 benchmark: bool = False
 visualize: bool = False
 
