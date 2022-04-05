@@ -1,4 +1,3 @@
-import cv2, os, numpy, random, json
 import torch
 import detectron2
 
@@ -6,7 +5,7 @@ import detectron2
 from detectron2.utils.logger import setup_logger
 # setup_logger()
 
-# import some common libraries
+# Import common libraries
 import numpy as np
 import os, json, cv2, random, time
 
@@ -34,15 +33,14 @@ def detect_objects():
 
     # Config Setup, Inference should use the config with parameters that are used in training
     # Some of the config parameters might be unneccesary for testing on images
-    cfg: CfgNode = get_cfg()
-    setup_cfg(cfg)
+    cfg = setup_cfg()
 
     # Detection Setup
-    print("Creating Predictor")
+    print("Creating Predictor...")
     predictor = DefaultPredictor(cfg)
 
     # Capture video source, 0 for webcam on laptop, might be 1 for external camera
-    print("Adding video source")
+    print("Adding video source...")
     cap = cv2.VideoCapture(VIDCAP_ID)
 
     if benchmark: time_list = []
@@ -50,11 +48,11 @@ def detect_objects():
 
     while(True):
         print(f"Iteration: {iters}")
-        print("Reading image")
+        print("Reading image...")
         _, frame = cap.read()
         # frame = cv2.imread("test1.jpeg")
 
-        print("Calculating outputs")
+        print("Calculating outputs...")
         if benchmark: t1 = time.perf_counter()
         outputs = predictor(frame) # format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format
         if benchmark: t2 = time.perf_counter()
@@ -62,15 +60,17 @@ def detect_objects():
         shape = get_mask_tensor_shape(outputs)
         print(f"Detected objects + image size: {shape}")
 
-        visualize_mask_and_center_all(outputs, frame, custom_metadata)
+        if visualize:
+            visualize_mask_and_center_all(outputs, frame, custom_metadata)
 
         all_masks = outputs['instances'].pred_masks
-        for mask in all_masks:
-            # print(np.array(mask.shape))
-            find_center(mask, frame)
+        object_centers = set(find_center(mask, frame) for mask in all_masks)
+        with open("test.json", "w") as file:
+            json.dump({"centers": list(object_centers)}, file, indent=2)
 
-        # Finds and plots a circle in the center of mass of the binary mask
-        # cv2.waitKey(0) & 0xFF == ord('n')
+        # for mask in all_masks:
+        #     # print(np.array(mask.shape))
+        #     find_center(mask, frame)
 
         iters += 1
 
@@ -96,24 +96,24 @@ def get_mask_tensor_shape(outputs):
 
 
 def visualize_mask_and_center_all(outputs, frame, custom_metadata):
-    if visualize:
-        v = Visualizer(frame[:, :, ::-1],
-                    metadata=custom_metadata, 
-                    scale=1.0, 
-                    instance_mode=ColorMode.SEGMENTATION   # remove the colors of unsegmented pixels. This option is only available for segmentation models
-        )
+    v = Visualizer(frame[:, :, ::-1],
+                metadata=custom_metadata, 
+                scale=1.0, 
+                instance_mode=ColorMode.SEGMENTATION   # remove the colors of unsegmented pixels. This option is only available for segmentation models
+    )
 
-        # print("Creating drawable instance predictions")
-        preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-        pred_img = preds.get_image()[:, :, ::-1]
+    # print("Creating drawable instance predictions")
+    preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+    pred_img = preds.get_image()[:, :, ::-1]
 
-        print("Showing image")
-        cv2.imshow("", pred_img)
-        cv2.waitKey(10)
-        return pred_img
+    print("Showing image")
+    cv2.imshow("", pred_img)
+    cv2.waitKey(10)
+    return pred_img
 
 
-def setup_cfg(cfg):
+def setup_cfg() -> CfgNode:
+    cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml"))
     cfg.MODEL.WEIGHTS = model_path
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.9
@@ -125,6 +125,7 @@ def setup_cfg(cfg):
     cfg.SOLVER.STEPS = []
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
+    return cfg
 
 
 def find_center(mask, image):
@@ -151,9 +152,11 @@ def find_center(mask, image):
         new_img = cv2.circle(image, center_int, CIRCLE_RADIUS, CIRCLE_COLOR, CIRCLE_THICKNESS)
         cv2.imshow("Center of Mass", new_img)
 
+    return center_int
 
 
-VIDCAP_ID: int = 1
+
+VIDCAP_ID: int = 0
 DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
 test_data_location = "datasets/sample/imgs/all"
