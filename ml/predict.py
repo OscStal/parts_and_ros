@@ -64,9 +64,21 @@ def detect_objects():
             visualize_mask_and_center_all(outputs, frame, custom_metadata)
 
         all_masks = outputs['instances'].pred_masks
-        object_centers = set(find_center(mask, frame) for mask in all_masks)
+
+        object_centers = list(find_center(mask, frame) for mask in all_masks)
+        img_width = shape[2]
+        img_height = shape[1]
+        pixel_center = (img_width/2, img_height/2)
+        object_offsets = tuple(tuple(map(lambda i, j: i - j, object_center, pixel_center)) for object_center in object_centers)
         with open("test.json", "w") as file:
-            json.dump({"centers": list(object_centers)}, file, indent=2)
+            json.dump({
+                "img_dim": {"width": img_width, "height": img_height},
+                "centers": object_centers,
+                "center_offsets": object_offsets
+                },
+                file,
+                indent = 4
+                )
 
         # for mask in all_masks:
         #     # print(np.array(mask.shape))
