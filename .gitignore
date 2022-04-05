@@ -144,3 +144,5 @@ datasets/*
 
 # Ignore detectron2 model files
 *.pth
+
+/test.json
