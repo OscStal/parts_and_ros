@@ -86,8 +86,9 @@ def detect_objects():
 
         iters += 1
 
-        if (cv2.waitKey(1000) & 0xFF == ord('q')) or iters > 5 or True:
+        if (True):
             cap.release()
+            cv2.waitKey(0) & 0xFF == ord("q")
             cv2.destroyAllWindows()
             if benchmark:
                 tt1 = t2 - t1
@@ -173,7 +174,7 @@ DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
 test_data_location = "datasets/sample/imgs/all"
 benchmark: bool = False
-visualize: bool = False
+visualize: bool = True
 
 if __name__ == "__main__":
     detect_objects()
