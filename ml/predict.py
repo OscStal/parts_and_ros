@@ -43,6 +43,10 @@ def detect_objects():
     print("Adding video source...")
     cap = cv2.VideoCapture(VIDCAP_ID)
 
+    # Set resolution
+    cap.set(3, 1280)
+    cap.set(4, 720)
+
     if benchmark: time_list = []
     iters = 0
 
@@ -61,11 +65,11 @@ def detect_objects():
         print(f"Detected objects + image size: {shape}")
 
         if visualize:
-            visualize_mask_and_center_all(outputs, frame, custom_metadata)
+            visualize_mask_and_center_all(outputs, frame, custom_metadata, iters)
 
         all_masks = outputs['instances'].pred_masks
 
-        object_centers = list(find_center(mask, frame) for mask in all_masks)
+        object_centers = list(find_center(mask, frame, iters) for mask in all_masks)
         img_width = shape[2]
         img_height = shape[1]
         pixel_center = (img_width/2, img_height/2)
@@ -108,7 +112,7 @@ def get_mask_tensor_shape(outputs):
     return shape
 
 
-def visualize_mask_and_center_all(outputs, frame, custom_metadata):
+def visualize_mask_and_center_all(outputs, frame, custom_metadata, iters):
     v = Visualizer(frame[:, :, ::-1],
                 metadata=custom_metadata, 
                 scale=1.0, 
@@ -121,6 +125,7 @@ def visualize_mask_and_center_all(outputs, frame, custom_metadata):
 
     print("Showing image")
     cv2.imshow("", pred_img)
+    cv2.imwrite(f"full_img{iters}", pred_img)
     cv2.waitKey(10)
     return pred_img
 
@@ -141,7 +146,7 @@ def setup_cfg() -> CfgNode:
     return cfg
 
 
-def find_center(mask, image):
+def find_center(mask, image, iters):
     """
     Finds the "center of mass" of the binary mask from a prediction
     """
@@ -152,7 +157,6 @@ def find_center(mask, image):
 
     # numpy.set_printoptions(threshold=np.inf)  # Print entire binary mask
     # print(f"Mask is {mask}")
-
     center = ndimage.center_of_mass(mask)
     # center has coordinates in (y,x) and float, this makes it (x,y) and rounded integers
     center_int = tuple((int(x) for x in center))[::-1]
@@ -163,13 +167,14 @@ def find_center(mask, image):
     CIRCLE_COLOR = (255, 0, 0)
     if visualize:
         new_img = cv2.circle(image, center_int, CIRCLE_RADIUS, CIRCLE_COLOR, CIRCLE_THICKNESS)
+        cv2.imwrite(f"center_img{iters}", new_img)
         cv2.imshow("Center of Mass", new_img)
 
     return center_int
 
 
 
-VIDCAP_ID: int = 0
+VIDCAP_ID: int = 1
 DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
 test_data_location = "datasets/sample/imgs/all"
