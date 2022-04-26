@@ -10,7 +10,7 @@ objectCenterX:int
 def loadJson():
     f = open(cameraPosPath)
     content = json.loaf(f)
-    f.close
+    f.close()
     return content
 
 def updateJson(positions:dict):
