@@ -141,6 +141,7 @@ dmypy.json
 # Ignore datasets
 datasets/*
 !datasets/sample/
+!datasets/prove/
 
 # Ignore detectron2 model files
 *.pth
