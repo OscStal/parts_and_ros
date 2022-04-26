@@ -9,7 +9,9 @@ objectCenterX:int
 
 def loadJson():
     f = open(cameraPosPath)
-    return json.load(f)
+    content = json.loaf(f)
+    f.close
+    return content
 
 def updateJson(positions:dict):
     deltaX=objectCenterX-pictureWidth/2*pixelEqCm
