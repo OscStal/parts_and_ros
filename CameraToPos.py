@@ -9,7 +9,7 @@ objectCenterX:int
 
 def loadJson():
     f = open(cameraPosPath)
-    content = json.loaf(f)
+    content = json.load(f)
     f.close()
     return content
 
