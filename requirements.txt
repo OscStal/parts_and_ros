@@ -8,4 +8,7 @@ lableme
 numpy
 pillow
 
+scipy
+
 # Detectron2, see https://detectron2.readthedocs.io/en/latest/tutorials/install.html
+# PyTorch (including torchvision), see PyTorch website for intallation instructions
