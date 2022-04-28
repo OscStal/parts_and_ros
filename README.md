@@ -4,9 +4,10 @@ Repository for Bacherlor Thesis EENX15-22-23
 # File structure
 - "parts_and_ros"-folder
     - General files
-    - "ml"-folder - everything machine learning
-    - "ros"-folder - everything ros
-    - dataset and data-related things
+    - "detectron2"-folder - everything detectron2 (running predictions, visualizations and finding center-points of objects)
+    - "robot"-folder - everything related to sending and retrieving information to/from robot arm
+    - "datasets"-folder - datasets used to train models
+    - "dataset_util"-folder - scripts to generate data and convert data between formats
 
 # Random (possibly) Useful Resources
 All these resources were not used and not all resources used are neccesarily listed here
