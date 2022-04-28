@@ -8,7 +8,8 @@ Repository for Bacherlor Thesis EENX15-22-23
     - "ros"-folder - everything ros
     - dataset and data-related things
 
-# Random Resources
+# Random (possibly) Useful Resources
+All these resources were not used and not all resources used are neccesarily listed here
 - 6D Object Detection with EfficientPose
     - [GitHub](https://github.com/ybkscht/EfficientPose)
 - Facebook's Detectron2 using PyTorch (Removes empty space in bounding box, kind of)
@@ -33,3 +34,11 @@ Repository for Bacherlor Thesis EENX15-22-23
     - [Possible data augmentation solution](https://github.com/joheras/CLoDSA)
     - [Data Augmentation from NVIDIA](https://docs.nvidia.com/deeplearning/dali/user-guide/docs/examples/use_cases/detection_pipeline.html)
     - [ImgAug for augmentations (Looks most promising)](https://github.com/aleju/imgaug)
+
+# Contributors
+Erik Bångsbo @ Chalmers
+Casper Jarhult @ Chalmers
+Jacob Nir @ Chalmers
+Max Sedersten @ Chalmers
+Oscar Stålnacke @ Chalmers
+Ludvig Tydén @ Chalmers
