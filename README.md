@@ -37,8 +37,13 @@ All these resources were not used and not all resources used are neccesarily lis
 
 # Contributors
 Erik Bångsbo @ Chalmers
+
 Casper Jarhult @ Chalmers
+
 Jacob Nir @ Chalmers
+
 Max Sedersten @ Chalmers
+
 Oscar Stålnacke @ Chalmers
+
 Ludvig Tydén @ Chalmers
