@@ -146,4 +146,6 @@ datasets/*
 # Ignore detectron2 model files
 *.pth
 
+.vscode
+
 /test.json
