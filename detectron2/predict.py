@@ -125,7 +125,7 @@ def visualize_mask_and_center_all(outputs, frame, custom_metadata, iters):
 
     print("Showing image")
     cv2.imshow("", pred_img)
-    cv2.imwrite(f"full_img{iters}", pred_img)
+    cv2.imwrite(f"full_img{iters}.png", pred_img)
     cv2.waitKey(10)
     return pred_img
 
@@ -167,7 +167,7 @@ def find_center(mask, image, iters):
     CIRCLE_COLOR = (255, 0, 0)
     if visualize:
         new_img = cv2.circle(image, center_int, CIRCLE_RADIUS, CIRCLE_COLOR, CIRCLE_THICKNESS)
-        cv2.imwrite(f"center_img{iters}", new_img)
+        cv2.imwrite(f"center_img{iters}.png", new_img)
         cv2.imshow("Center of Mass", new_img)
 
     return center_int
