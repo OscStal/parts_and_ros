@@ -20,6 +20,8 @@ from detectron2 import model_zoo
 
 from scipy import ndimage
 
+from cam_calib import calibrate_img
+
 
 
 def detect_objects():
@@ -44,8 +46,8 @@ def detect_objects():
     cap = cv2.VideoCapture(VIDCAP_ID)
 
     # Set resolution
-    cap.set(3, 1280)
-    cap.set(4, 720)
+    cap.set(3, 640)
+    cap.set(4, 480)
 
     if benchmark: time_list = []
     iters = 0
@@ -54,7 +56,9 @@ def detect_objects():
         print(f"Iteration: {iters}")
         print("Reading image...")
         _, frame = cap.read()
-        # frame = cv2.imread("test1.jpeg")
+        if calibrate: frame = calibrate_img(frame, 640, 480)
+        
+        #frame = cv2.imread("test1.jpeg")
 
         print("Calculating outputs...")
         if benchmark: t1 = time.perf_counter()
@@ -74,6 +78,7 @@ def detect_objects():
         img_height = shape[1]
         pixel_center = (img_width/2, img_height/2)
         object_offsets = tuple(tuple(map(lambda i, j: i - j, object_center, pixel_center)) for object_center in object_centers)
+        print(f"Offsets = {object_offsets}")
         with open("test.json", "w") as file:
             json.dump({
                 "img_dim": {"width": img_width, "height": img_height},
@@ -134,7 +139,8 @@ def setup_cfg() -> CfgNode:
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml"))
     cfg.MODEL.WEIGHTS = model_path
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.9
+    # cfg.MODEL_WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_DC5_3x.yaml")
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.75
     cfg.MODEL.DEVICE = DEVICE
     # cfg.DATASETS.TRAIN = ("train", )
     cfg.DATALOADER.NUM_WORKERS = 2
@@ -162,7 +168,7 @@ def find_center(mask, image, iters):
     center_int = tuple((int(x) for x in center))[::-1]
     print(f"Center pixel: {center_int}")
 
-    CIRCLE_RADIUS = 4
+    CIRCLE_RADIUS = 3
     CIRCLE_THICKNESS = 2
     CIRCLE_COLOR = (255, 0, 0)
     if visualize:
@@ -174,12 +180,13 @@ def find_center(mask, image, iters):
 
 
 
-VIDCAP_ID: int = 1
+VIDCAP_ID: int = 0
 DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
 test_data_location = "datasets/sample/imgs/all"
 benchmark: bool = False
-visualize: bool = True
+visualize: bool = False
+calibrate: bool = True
 
 if __name__ == "__main__":
     detect_objects()
