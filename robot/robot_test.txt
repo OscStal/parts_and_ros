@@ -1,0 +1,12 @@
+ROBOT_TEST - Going above grabbing point of detected part
+
+StartingOffset(-92, 158)    - Stage1(16, 5)     - Stage2(4, -3)
+StartingOffset(-178, 141)   - Stage1(21, 6)     - Stage2(1, 1)
+StartingOffset(-196, -32)   - Stage1(6, 13)     - Stage2(0, -1)
+StartingOffset(-48, -74)    - Stage1(-5, 5)     - Stage2(0, 0)
+StartingOffset(159, 198)    - Stage1(1, -18)    - Stage2(-1, 1)
+StartingOffset(175, 74)     - Stage1(-10, -16)  - Stage2(-1, 2) #It grabbed
+StartingOffset(-170, -143)  - Stage1(-3, 11)    - Stage2(2, -1)
+StartingOffset(-40, -159)   - Stage1(-13, -6)   - Stage2(1, 1)
+StartingOffset(13, -40)     - Stage1(-5, 0)     - Stage2(0, 0)
+StartingOffset(106, -50)    - Stage1(-15, -6)   - Stage2(0, 1)
