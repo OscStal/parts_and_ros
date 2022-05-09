@@ -20,7 +20,8 @@ from detectron2 import model_zoo
 
 from scipy import ndimage
 
-from cam_calib import calibrate_img
+# This import is currently broken, but the calibrate_img function still exists in the camera_calibration.py file
+# from camera_calibration import calibrate_img
 
 
 
