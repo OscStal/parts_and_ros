@@ -3,8 +3,9 @@ Repository for Bacherlor Thesis EENX15-22-23
 
 # File structure
 - "parts_and_ros"-folder
-    - General files
-    - "detectron2"-folder - everything detectron2 (running predictions, visualizations and finding center-points of objects)
+    - General filesS
+    - "convert"-folder - things related to data-conversion for EfficientPose and related tools
+    - "detectron2"-folder - everything detectron2 (running predictions, visualizations and finding center-points of objects, colab notebook)
     - "robot"-folder - everything related to sending and retrieving information to/from robot arm
     - "datasets"-folder - datasets used to train models
     - "dataset_util"-folder - scripts to generate data and convert data between formats
