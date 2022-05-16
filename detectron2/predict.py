@@ -119,6 +119,10 @@ def get_mask_tensor_shape(outputs):
 
 
 def visualize_mask_and_center_all(outputs, frame, custom_metadata, iters):
+    def MonoColorVisualizer(Visualizer):
+        def _jitter(self, color):
+            return color
+
     v = Visualizer(frame[:, :, ::-1],
                 metadata=custom_metadata, 
                 scale=1.0, 
