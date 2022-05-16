@@ -123,7 +123,7 @@ def visualize_mask_and_center_all(outputs, frame, custom_metadata, iters):
         def _jitter(self, color):
             return color
 
-    v = Visualizer(frame[:, :, ::-1],
+    v = MonoColorVisualizer(frame[:, :, ::-1],
                 metadata=custom_metadata, 
                 scale=1.0, 
                 instance_mode=ColorMode.SEGMENTATION   # remove the colors of unsegmented pixels. This option is only available for segmentation models
