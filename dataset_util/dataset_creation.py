@@ -4,11 +4,11 @@ import os
 # Manually specify these if file_choice boolean below is False
 vid_file_path: str = "datasets/sample/vids/vid7.mp4"
 out_folder_path: str = "datasets/sample/imgs"
-image_capture_rate: int = 1
-image_filename_prefix: str = "dataset7_"
+image_capture_rate: int = 8
+image_filename_prefix: str = "vid1_"
 
 # Specify this
-file_choice_with_file_explorer: bool = False
+file_choice_with_file_explorer: bool = True
 
 
 

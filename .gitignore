@@ -149,3 +149,6 @@ datasets/*
 .vscode
 
 /test.json
+
+!/presentation/vids/detectvid1.mp4
+/presentation/imgs/
