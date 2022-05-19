@@ -42,12 +42,15 @@ def setup_cfg() -> CfgNode:
 
 def main():
     custom_metadata: Metadata = MetadataCatalog.get("train")
+    custom_metadata.thing_colors = [(0, 80, 200)]
     cfg = setup_cfg()
     predictor = DefaultPredictor(cfg)
     list_of_files = glob.glob(img_dir)
     list_of_files.sort(key=lambda f: int(re.sub('\D', '', f)))
 
     for i, img in enumerate(list_of_files):
+        if "new" in img:
+            continue
         print(i)
         t1 = time.perf_counter()
         img = cv2.imread(img)
