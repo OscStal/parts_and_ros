@@ -150,5 +150,8 @@ datasets/*
 
 /test.json
 
-!/presentation/vids/detectvid1.mp4
-/presentation/imgs/
+!/presentation/vids/detectron_viz3.mp4
+/presentation/imgs1/
+/presentation/imgs3/
+/presentation/imgs2/
+/presentation/imgs4/

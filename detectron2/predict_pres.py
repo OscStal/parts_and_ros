@@ -41,17 +41,29 @@ def setup_cfg() -> CfgNode:
     return cfg
 
 def main():
+    print("Setup")
     custom_metadata: Metadata = MetadataCatalog.get("train")
     custom_metadata.thing_colors = [(0, 80, 200)]
     cfg = setup_cfg()
     predictor = DefaultPredictor(cfg)
-    list_of_files = glob.glob(img_dir)
-    list_of_files.sort(key=lambda f: int(re.sub('\D', '', f)))
+
+    # Beware of bad code
+    list_of_files1 = glob.glob(img_dir)
+    list_of_files1.sort(key=lambda f: int(re.sub('\D', '', f)))
+    list_of_files2 = glob.glob(img_dir2)
+    list_of_files2.sort(key=lambda f: int(re.sub('\D', '', f)))
+    list_of_files3 = glob.glob(img_dir3)
+    list_of_files3.sort(key=lambda f: int(re.sub('\D', '', f)))
+    list_of_files4 = glob.glob(img_dir4)
+    list_of_files4.sort(key=lambda f: int(re.sub('\D', '', f)))
+    list_of_files = list_of_files1 + list_of_files2 + list_of_files3 + list_of_files4
+    # Bad code stop
 
     for i, img in enumerate(list_of_files):
         if "new" in img:
+            print("Skipped already processed file")
             continue
-        print(i)
+        print(f"Image {i} of {len(list_of_files)}")
         t1 = time.perf_counter()
         img = cv2.imread(img)
         outputs = predictor(img)
@@ -65,18 +77,18 @@ def main():
         preds = v.draw_instance_predictions(outputs["instances"].to("cpu"))
         pred_img = preds.get_image()[:, :, ::-1]
 
-        cv2.imwrite(f"presentation/imgs/newvid1_{i}.png", pred_img)
+        cv2.imwrite(f"presentation/imgs1/newvid1_{i}.png", pred_img)
         t2 = time.perf_counter() - t1
-        print(f"Est time: {(len(list_of_files)-i)*t2} seconds")
+        print(f"Est time: {int((len(list_of_files)-i)*t2/60)} min, {int((len(list_of_files)-i)*t2)%60} sec")
         cv2.waitKey(1)
 
 
 DEVICE: str = "cpu"
 model_path: str = "model_final.pth"
-img_dir = "presentation/imgs/*"
-benchmark: bool = False
-visualize: bool = False
-calibrate: bool = False
+img_dir = "presentation/imgs1/*"
+img_dir2 = "presentation/imgs2/*"
+img_dir3 = "presentation/imgs3/*"
+img_dir4 = "presentation/imgs4/*"
 
 if __name__ == "__main__":
     main()
